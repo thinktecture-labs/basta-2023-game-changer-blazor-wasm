@@ -1,0 +1,119 @@
+:root {
+    --tt-theme-core: #FF584F;
+    --tt-theme-100: hsl(3, 100%, 95%);
+    --tt-theme-150: hsl(3, 100%, 86%);
+    --tt-theme-200: hsl(3, 100%, 77%);
+    --tt-theme-250: hsl(3, 100%, 68%);
+    --tt-theme-300: hsl(3, 100%, 59%);
+    --tt-theme-400: hsl(3, 100%, 50%);
+    --tt-theme-500: hsl(3, 100%, 41%);
+    --tt-theme-600: hsl(3, 100%, 32%);
+    --tt-theme-700: hsl(3, 100%, 23%);
+    --tt-theme-800: hsl(3, 100%, 14%);
+    --tt-theme-900: hsl(3, 100%, 5%);
+    --tt-dark-color: #212121;
+    --tt-light-color: #ffffff;
+    --tt-orange-color: #f29136;
+    --bs-primary: #3D6FB4;
+    --bs-primary-rgb: 61, 111, 180;
+    --bs-btn-active-bg: #3D6FB4;
+    --bs-btn-active-border-color: #3D6FB4;
+}
+
+html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  margin-bottom: 60px;
+}
+
+/* #region Sticky Footer */
+body {
+    display: flex;
+    flex-direction: column;
+    background-color: var(--tt-light-color);
+    color: var(--tt-dark-color);
+}
+
+main {
+    flex-grow: 1;
+}
+
+footer {
+    flex-shrink: 0;
+}
+
+/* #endregion Sticky Footer */
+
+.btn-primary {
+    --bs-btn-bg: var(--tt-theme-250);
+    --bs-btn-border-color: var(--tt-theme-250);
+    --bs-btn-hover-bg: var(--tt-theme-300);
+    --bs-btn-hover-border-color: var(--tt-theme-300);
+    --bs-btn-active-bg: var(--tt-theme-250);
+    --bs-btn-active-border-color: var(--tt-theme-300);
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem var(--tt-theme-500);
+}
+
+.navbar,
+.footer {
+    background-color: var(--tt-theme-core);
+}
+
+.footer {
+    color: var(--tt-light-color);
+}
+
+.socialicons {
+    font-size: 2rem;
+    padding-left: .5rem;
+    color: var(--tt-theme-600);
+    transition: color 0.2s;
+}
+
+    .socialicons:hover {
+        color: var(--tt-orange-color);
+    }
+
+.productionImage {
+    max-width: 300px;
+    padding: .5rem;
+    max-height: 100px;
+}
+
+.imagePosterPlaceHolder {
+    aspect-ratio: 2/3;
+}
+
+.fade-in {
+    animation: fade-in 0.8s ease-in;
+}
+
+@keyframes fade-in {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}

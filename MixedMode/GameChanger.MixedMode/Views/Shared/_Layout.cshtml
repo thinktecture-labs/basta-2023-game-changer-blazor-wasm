@@ -1,0 +1,54 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - MixedMode</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/GameChanger.MixedMode.styles.css" asp-append-version="true" />
+</head>
+<body>
+    <header>
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/">
+                <img src="/img/logo_T_rot_vector.svg" height="50" />
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+        </div>
+    </nav>
+</header>
+<main class="container-fluid py-3">
+    @RenderBody()
+</main>
+
+    <footer class="footer container-fluid py-3">
+        <div class="px-3">
+            <div class="row row-cols-1 row-cols-lg-3 align-items-center gy-2">
+                <div class="col text-center text-lg-start">
+                    &copy; Pazor Solutions 2023
+                </div>
+                <div class="col text-center">
+                    <div><img src="/img/THEMOVEDBLogo.svg" height="25" /></div>
+                    <div>This sample uses the TMDB API but is not endorsed or certified by TMDB.</div>
+                </div>
+                <div class="col text-center text-lg-end">
+                    <a href="https://github.com/thinktecture-labs/basta-2023-game-changer"><i class="socialicons bi bi-github"></i></a>
+                    <a href="https://twitter.com/jahr_patrick"><i class="socialicons bi bi-twitter"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script src="_framework/blazor.server.js"></script>
+    <script src="_content/GameChanger.MixedMode.Shared/site.js"></script>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

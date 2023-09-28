@@ -1,0 +1,70 @@
+﻿@page "/"
+
+<PageTitle>Home</PageTitle>
+
+<div class="my-1 container-xl px-5">
+    <h1>Blazor WASM Standalone</h1>
+    <div class="row mt-3 border shadow">
+        <div class="col-6">
+            <h4><a href="/movies/wasm">Movies (WASM)</a></h4>
+            <div>
+                <code>@("<Client.Pages.MovieListWASM @rendermode=\"@RenderMode.WebAssembly\" />")</code>
+            </div>
+            <p>
+                Diese Seite verwendet interaktive Blazor-Komponenten in Web Assembly. Diese Seite wird auf dem Server vorgerendert
+                Server vorgerendert, aber sie läuft interaktiv auf dem Client in WASM. Derzeit dient die Serverkomponente .razor
+                nur für das Routing - sie zeigt die WASM-Komponente im ClientApp-Projekt an, die in der .cspro der Server-App referenziert wird.
+                .csproj der Server-App referenziert wird.
+            </p>
+            <p>
+                In diesem Fall werden über die Schaltfläche "Weitere Informationen" die Details zu diesem Film abgerufen und in einem Modal angezeigt,
+                genau wie die SignalR-Komponente. Da dies jedoch auf dem Client ausgeführt wird, gibt es eine minimale API
+                in der Program.cs des Servers abgebildet. Die WASM-Komponente sendet eine Anfrage an unseren Server, der wiederum den
+                den API-Schlüssel des Servers verwendet, um eine Anfrage an die API von TMDB zu senden
+            </p>
+        </div>
+        <div class="col-6">
+            <h4><a href="/movies/auto">Movies (Auto)</a></h4>
+            <div>
+                <code>@("<Client.Pages.MovieListWASM @rendermode=\"@RenderMode.Auto\" />")</code>
+            </div>
+            <p>
+                Dies ist dieselbe Komponente, die auch auf der WASM-Seite verwendet wird, aber jetzt entscheidet das Framework, wo sie ausgeführt wird. Manchmal
+                über SignalR, ein anderes Mal in WASM. Beim Testen wird die Seite beim ersten Laden normalerweise in SignalR
+                und ein erneutes Laden erfolgt in der Regel in WASM.
+            </p>
+            <p>
+                Die Komponente hat ein <code>Console.WriteLine()</code>, das nach dem Rendern ausgeführt wird. Wenn sie im WASM ausgeführt wird,
+                sehen Sie die Meldung in der JavaScript-Konsole. Wenn es über SignalR ausgeführt wird, wird die Meldung
+                in der Terminalausgabe des Servers protokolliert.
+            </p>
+        </div>
+        <div class="col-12">
+            <h5>Pros:</h5>
+            <ul>
+                <li>Hocheffiziente Ausführung in WebAssembly und sofortige Reaktion der Benutzeroberfläche, da die Ausführung vollständig auf dem Client erfolgt</li>
+                <li>Geringerer Ressourcenverbrauch auf dem Server, da die Komponente(n) und die Laufzeit auf den Client heruntergeladen und vom Client gerendert werden. Nach der Bereitstellung der App besteht die einzige Belastung des Servers in der Beantwortung von API-Anfragen der Client-App</li>
+                <li>Auto Mode bedeutet, dass der Benutzer mit Ihren Blazor-Komponenten über die schnellste Methode interagieren kann</li>
+                <li>WASM kann eine vollständige Offline-Interaktion unterstützen, solange die Komponente keine Daten vom Server anfordern muss.</li>
+            </ul>
+            <h5>Cons:</h5>
+            <ul>
+                <li>Die Kommunikation mit dem Server muss über HTTP-Anfragen erfolgen, da die Komponenten auf dem Client ausgeführt werden. Dies bedeutet, dass eine sichere API-Schicht erforderlich ist, um Daten vom Server zu senden/abzurufen</li>
+                <li>Der gesamte Code in WASM/Auto-Komponenten wird auf den Client heruntergeladen, was bedeutet, dass jeglicher Code oder Ressourcen in WASM-Komponenten für Endbenutzer verfügbar sind. Geheimnisse müssen auf dem Server getrennt von der Komponente gepflegt werden</li>
+                <li>
+                    Bei reinen WASM-Komponenten muss ihr Code zusammen mit der .NET WASM-Laufzeitumgebung heruntergeladen werden, bevor sie gerendert werden, was zu einem langsameren Laden der Seite führen kann.
+                    Beim Rendering im Auto-Modus wird dies umgangen, indem die Komponente sofort über SignalR gerendert wird, bis die WASM-Laufzeit heruntergeladen und zur Ausführung bereit ist, und dann nahtlos zum clientseitigen Rendering in WASM übergeht. Wenn die Laufzeitumgebung bereits verfügbar ist, werden die Komponenten sofort in WASM gerendert.
+                </li>
+            </ul>
+            <h5>Allgemeine Anwendungsfälle:</h5>
+            <ul>
+                <li>Groß angelegte Webanwendungen für Verbraucher</li>
+                <li>Anwendungen mit Offline-Unterstützung oder PWAs</li>
+                <li>Front-Ends für bestehende Web-APIs</li>
+                <li>Berechnungsintensive Anwendungen</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+

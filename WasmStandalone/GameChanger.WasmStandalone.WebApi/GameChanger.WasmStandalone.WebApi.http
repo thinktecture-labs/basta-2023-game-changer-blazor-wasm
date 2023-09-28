@@ -1,0 +1,6 @@
+@GameChanger.WasmStandalone.WebApi_HostAddress = http://localhost:5028
+
+GET {{GameChanger.WasmStandalone.WebApi_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

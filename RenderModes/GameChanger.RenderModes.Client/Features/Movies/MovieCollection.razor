@@ -1,0 +1,36 @@
+﻿<h1 class="text-center mt-5 display-3">Popular Movies</h1>
+<div class="container-xl">
+@if (MovieResponse is null)
+{
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 row-cols-xl-4 g-3 justify-content-center justify-content-xl-start">
+
+        @for (int i = 1; i <= 8; i++)
+        {
+            <div class="col">
+                <ClientMovieCard />
+            </div>
+        }
+
+    </div>
+}
+else
+{
+    
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 row-cols-xl-4 g-3 justify-content-center justify-content-xl-start">
+
+        @foreach (var movie in MovieResponse.Results)
+        {
+            <div class="col" @key="movie.Id">
+                <ClientMovieCard PopularMovie="movie" ModalId="movie-modal" OnBtnClick="GetMovieDetails" />
+            </div>
+        }
+
+    </div>
+
+    <ClientMovieModal MovieDetails="MovieDetails" />
+}
+</div>
+
+
+
+

@@ -1,0 +1,189 @@
+﻿@page "/"
+
+<PageTitle>Dashboard</PageTitle>
+
+<div class="my-1 container-xl px-5">
+    <h1>Blazor Render Modes</h1>
+    <div class="row mt-3 border shadow">
+        <h2>Server Side Rendered (SSR)</h2>
+        <div class="col-6">
+            <h4><a href="/movies/ssr">Movies (SSR)</a></h4>
+            <div>
+                <code>(No rendering attribute)</code>
+            </div>
+            <p>
+                Diese Seite wird vollständig serverseitig gerendert und liefert statisches HTML.
+                Wenn Sie zu /movies/ssr navigieren, muss die OnInitializedAsync-Methode abgeschlossen werden, bevor Sie eine Seitenantwort sehen.
+            </p>
+            <p>
+                SSR-Rendering-Seiten geben den gesamten HTML- und CSS-Code an den Browser zurück. Sie verhält sich und arbeitet wie eine normale Webapplikation.
+                Um Änderungen zu sehen, müssen Sie auf Refresh drücken, es wird keine Verbindung zum Server gehalten.
+            </p>
+            <p>
+                Die Schaltfläche "Weitere Informationen" ruft die Details des Films ab und zeigt sie in einem modalen Fenster an.
+                Dies geschieht als Ergebnis eines Onclick-Handlers, der eine JavaScript-Funktion aufruft, um das DOM des Modals zu manipulieren.
+                JavaScript ist für jede clientseitige Interaktion erforderlich.
+            </p>
+
+        </div>
+        <div class="col-6">
+            <h4><a href="/movies/stream">Movies (Stream)</a></h4>
+            <div>
+                <code>@("@attribute [StreamRendering(true)]")</code>
+            </div>
+            <p>
+                Diese Seite wird serverseitig mit Streaming Rendering gerendert. Das bedeutet, dass der Server
+                sendet Ihnen sofort etwas HTML und lässt den HTTP-Antwortstrom offen, bis
+                bis alle asynchronen Operationen abgeschlossen sind, und sendet Ihnen dann aktualisiertes HTML.
+            </p>
+            <p>
+                In diesem Fall werden Sie 3 Sekunden lang Platzhalterwerte sehen, bevor der Server die Filme
+                aus der TMDB abruft und eine Aktualisierung mit der fertigen Seite sendet. Wir haben diese Verzögerung absichtlich eingeführt
+                damit Sie sehen können, wie die Seite gerendert wird.
+            </p>
+            <p>
+                Die Schaltfläche "Weitere Informationen" wird nach wie vor mit JavaScript realisiert, genau wie im SSR-Modus.
+            </p>
+
+        </div>
+        <div class="col-12">
+            <h5>Pros:</h5>
+            <ul>
+                <li>Weniger Server-Ressourcen notwendig</li>
+                <li>
+                    Die Seite wird auf dem Client schnell gerendert, insbesondere mit Hilfe der "Enhanced Navigation" von Blazor
+                    Statisches HTML ist ein Vorteil für SEO
+                </li>
+                <li>
+                    Streaming Rendering erleichtert das Rendern von Platzhalterinhalten, während auf dem Server lang laufende asynchrone Aufgaben ausgeführt werden.
+                </li>
+            </ul>
+            <h5>Cons:</h5>
+            <ul>
+                <li>JavaScript ist für die clientseitige Interaktivität nach dem Rendering der Seite erforderlich</li>
+                <li>Kein Zustand wird in Komponenten gehalten</li>
+                <li>Sie müssen Formulare, JavaScript oder die Seitennavigation verwenden, um mit dem Server zu interagieren.</li>
+            </ul>
+            <h5>Häufige Anwendungsfälle:</h5>
+            <ul>
+                <li>Startseiten</li>
+                <li>Kontakt Seiten</li>
+                <li>Dashboards</li>
+                <li>Inhalte, die in der Regel schreibgeschützt sind</li>
+            </ul>
+        </div>
+    </div>
+    <div class="row mt-3 border shadow">
+        <h2>Blazor Server mit SignalR</h2>
+        <div class="col-12">
+            <h4><a href="/movies/signalr">Movies (SignalR)</a></h4>
+            <div>
+                <code>@("@attribute [RenderModeServer]")</code>
+            </div>
+            <p>
+                Diese Seite verwendet interaktive Blazor-Komponenten, die den Server-Rendering-Modus verwenden. Das bedeutet, dass die Seite
+                und ihr DOM werden auf dem Server gerendert, aber der Server behält die Übersicht über das DOM und verarbeitet Ereignisse
+                Ereignisse, die vom Browser gesendet werden, und aktualisiert die Seite dynamisch, ohne dass eine Seitenaktualisierung erforderlich ist.
+                Aktualisierungen in Echtzeit werden über die SignalR-Verbindung an den Browser gestreamt, und Benutzerinteraktionen werden über dieselbe Verbindung an den Server übertragen.
+                Benutzerinteraktionen werden über dieselbe Verbindung an den Server übertragen.
+            </p>
+            <p>
+                In diesem Fall werden über die Schaltfläche "Weitere Informationen" die Details zu diesem Film abgerufen und in einem Modal angezeigt.
+                Dies geschieht als Ergebnis eines EventCallback-Parameters, der der MovieCard-Komponente über einen
+                onclick-Listener übergeben wird, was normalerweise nur über JavaScript möglich ist. Für die Anzeige des Modals wird kein JavaScript benötigt.
+            </p>
+            <p>
+                Hinweis: Beim Navigieren zu dieser Seite kommt es zu einer Verzögerung, da die SignalR-Verbindung aufgebaut wird. Wenn die Verbindung
+                unterbrochen wird, ist die Seite nicht mehr ansprechbar. In der Regel wird eine Fehlerseite angezeigt. Dieses Verhalten kann
+                mit JavaScript überschrieben werden. JavaScript kann verwendet werden, um die Verbindung zu aktualisieren, wenn die Verbindung
+                um die Seite aufrechtzuerhalten oder an einen anderen Endpunkt wie die Abmeldung oder einen Index weiterzuleiten.
+            </p>
+        </div>
+        <div class="col-12">
+            <h5>Pros:</h5>
+            <ul>
+                <li>Die volle Leistungsfähigkeit interaktiver Blazor-Komponenten, z.B. Ereignisbehandlung, Komponentenzustand, Callbacks, JS Interop, etc.</li>
+                <li>Sicherer Zugriff auf Serverressourcen wie Dienste oder Datenbankabfragen, da das DOM auf dem Server verwaltet wird und der gesamte Code auf dem Server läuft. Dies bedeutet, dass der sichere Zugriff auf Daten und deren Verwaltung auf dem Server über diese Komponenten erfolgen kann, ohne dass ein API-Endpunkt erstellt werden muss.</li>
+                <li>Da der Zustand auf dem Server im Speicher abgelegt wird, sind in diesen Komponenten keine Formulareingaben und HTTP-Anfragen erforderlich. Alle Benutzereingaben befinden sich bereits auf dem Server und können direkt an Ihre Dienstschicht weitergeleitet werden (Hinweis: Datei-Uploads sind hier eine Ausnahme)</li>
+                <li>Schnelle Entwicklung; Entwickler können vollständige Seiten und umfangreiche Interaktionen in C# erstellen, ohne dass ein Kontextwechsel zu JavaScript erforderlich ist.</li>
+            </ul>
+            <h5>Cons:</h5>
+            <ul>
+                <li>Höherer Ressourcenverbrauch auf dem Server, da der Seitenstatus und die Codeausführung für jeden Client auf dem Server gepflegt und gerendert werden</li>
+                <li>Die Clients müssen eine Web-Socket-Verbindung zum Server unterhalten, um die Seite nutzen zu können. Wenn die Verbindung unterbrochen wird, muss die Seite aktualisiert werden und der Seitenstatus kann verloren gehen</li>
+                <li>Langsame Verbindungen mit hoher Latenz zum Server können zu Verzögerungen bei Benutzerinteraktionen führen.</li>
+            </ul>
+            <h5>Allgemeine Anwendungsfälle:</h5>
+            <ul>
+                <li>Sicherer Datenzugang</li>
+                <li>Rendering/Streaming großer Datenmengen aus der Datenbank</li>
+                <li>Thin-Client-Anwendungen</li>
+                <li>Rapid Prototyping, B2B oder interne Geschäftsanwendungen</li>
+            </ul>
+        </div>
+    </div>
+    <div class="row mt-3 border shadow">
+        <h2>Blazor WASM</h2>
+        <div class="col-6">
+            <h4><a href="/movies/wasm">Movies (WASM)</a></h4>
+            <div>
+                <code>@("<Client.Pages.MovieListWASM @rendermode=\"@RenderMode.WebAssembly\" />")</code>
+            </div>
+            <p>
+                Diese Seite verwendet interaktive Blazor-Komponenten in Web Assembly. Diese Seite wird auf dem Server vorgerendert
+                Server vorgerendert, aber sie läuft interaktiv auf dem Client in WASM. Derzeit dient die Serverkomponente .razor
+                nur für das Routing - sie zeigt die WASM-Komponente im ClientApp-Projekt an, die in der .cspro der Server-App referenziert wird.
+                .csproj der Server-App referenziert wird.
+            </p>
+            <p>
+                In diesem Fall werden über die Schaltfläche "Weitere Informationen" die Details zu diesem Film abgerufen und in einem Modal angezeigt,
+                genau wie die SignalR-Komponente. Da dies jedoch auf dem Client ausgeführt wird, gibt es eine minimale API
+                in der Program.cs des Servers abgebildet. Die WASM-Komponente sendet eine Anfrage an unseren Server, der wiederum den
+                den API-Schlüssel des Servers verwendet, um eine Anfrage an die API von TMDB zu senden
+            </p>
+        </div>
+        <div class="col-6">
+            <h4><a href="/movies/auto">Movies (Auto)</a></h4>
+            <div>
+                <code>@("<Client.Pages.MovieListWASM @rendermode=\"@RenderMode.Auto\" />")</code>
+            </div>
+            <p>
+                Dies ist dieselbe Komponente, die auch auf der WASM-Seite verwendet wird, aber jetzt entscheidet das Framework, wo sie ausgeführt wird. Manchmal
+                über SignalR, ein anderes Mal in WASM. Beim Testen wird die Seite beim ersten Laden normalerweise in SignalR
+                und ein erneutes Laden erfolgt in der Regel in WASM.
+            </p>
+            <p>
+                Die Komponente hat ein <code>Console.WriteLine()</code>, das nach dem Rendern ausgeführt wird. Wenn sie im WASM ausgeführt wird,
+                sehen Sie die Meldung in der JavaScript-Konsole. Wenn es über SignalR ausgeführt wird, wird die Meldung
+                in der Terminalausgabe des Servers protokolliert.
+            </p>
+        </div>
+        <div class="col-12">
+            <h5>Pros:</h5>
+            <ul>
+                <li>Hocheffiziente Ausführung in WebAssembly und sofortige Reaktion der Benutzeroberfläche, da die Ausführung vollständig auf dem Client erfolgt</li>
+                <li>Geringerer Ressourcenverbrauch auf dem Server, da die Komponente(n) und die Laufzeit auf den Client heruntergeladen und vom Client gerendert werden. Nach der Bereitstellung der App besteht die einzige Belastung des Servers in der Beantwortung von API-Anfragen der Client-App</li>
+                <li>Auto Mode bedeutet, dass der Benutzer mit Ihren Blazor-Komponenten über die schnellste Methode interagieren kann</li>
+                <li>WASM kann eine vollständige Offline-Interaktion unterstützen, solange die Komponente keine Daten vom Server anfordern muss.</li>
+            </ul>
+            <h5>Cons:</h5>
+            <ul>
+                <li>Die Kommunikation mit dem Server muss über HTTP-Anfragen erfolgen, da die Komponenten auf dem Client ausgeführt werden. Dies bedeutet, dass eine sichere API-Schicht erforderlich ist, um Daten vom Server zu senden/abzurufen</li>
+                <li>Der gesamte Code in WASM/Auto-Komponenten wird auf den Client heruntergeladen, was bedeutet, dass jeglicher Code oder Ressourcen in WASM-Komponenten für Endbenutzer verfügbar sind. Geheimnisse müssen auf dem Server getrennt von der Komponente gepflegt werden</li>
+                <li>
+                    Bei reinen WASM-Komponenten muss ihr Code zusammen mit der .NET WASM-Laufzeitumgebung heruntergeladen werden, bevor sie gerendert werden, was zu einem langsameren Laden der Seite führen kann.
+                    Beim Rendering im Auto-Modus wird dies umgangen, indem die Komponente sofort über SignalR gerendert wird, bis die WASM-Laufzeit heruntergeladen und zur Ausführung bereit ist, und dann nahtlos zum clientseitigen Rendering in WASM übergeht. Wenn die Laufzeitumgebung bereits verfügbar ist, werden die Komponenten sofort in WASM gerendert.
+                </li>
+            </ul>
+            <h5>Allgemeine Anwendungsfälle:</h5>
+            <ul>
+                <li>Groß angelegte Webanwendungen für Verbraucher</li>
+                <li>Anwendungen mit Offline-Unterstützung oder PWAs</li>
+                <li>Front-Ends für bestehende Web-APIs</li>
+                <li>Berechnungsintensive Anwendungen</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+
